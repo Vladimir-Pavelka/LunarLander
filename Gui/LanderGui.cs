@@ -9,10 +9,8 @@ namespace Gui
         private const int SimulationIntervalMs = 1000 / 50; // 50 fps
 
         private readonly Timer _redrawTimer = new Timer();
-        private readonly Image _landerImage = Image.FromFile(@"C:\Users\pavelkav\Desktop\Personal\lander.png");
-        private Point _landerPosition = new Point(0, 0);
-
-        private readonly Bitmap _buffer;
+        private readonly Image _landerImage = Image.FromFile("lander.png");
+        private Bitmap _buffer;
 
         private readonly Lander _lander = Lander.Still;
 
@@ -55,7 +53,8 @@ namespace Gui
 
         private void DrawLander(Graphics graphics)
         {
-            graphics.DrawImage(_landerImage, _landerPosition);
+            var landerPosition = new Point((int)_lander.Position.X, (int)_lander.Position.Y);
+            graphics.DrawImage(_landerImage, landerPosition);
         }
 
         private void LanderGui_KeyDown(object sender, KeyEventArgs e)
@@ -65,23 +64,22 @@ namespace Gui
                 case Keys.Space:
                     _lander.IsMainEngineFiring = true;
                     break;
+            }
+        }
 
-                case Keys.A:
-                    _landerPosition = new Point(_landerPosition.X - 10, _landerPosition.Y);
-                    break;
-
-                case Keys.D:
-                    _landerPosition = new Point(_landerPosition.X + 10, _landerPosition.Y);
-                    break;
-
-                case Keys.W:
-                    _landerPosition = new Point(_landerPosition.X, _landerPosition.Y - 10);
-                    break;
-
-                case Keys.S:
-                    _landerPosition = new Point(_landerPosition.X, _landerPosition.Y + 10);
+        private void LanderGui_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Space:
+                    _lander.IsMainEngineFiring = false;
                     break;
             }
+        }
+
+        private void LanderGui_SizeChanged(object sender, System.EventArgs e)
+        {
+            _buffer = new Bitmap(canvas.Width, canvas.Height);
         }
     }
 }

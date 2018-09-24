@@ -33,13 +33,11 @@
             // 
             // canvas
             // 
-            this.canvas.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas.BackColor = System.Drawing.Color.Black;
-            this.canvas.Location = new System.Drawing.Point(12, 12);
+            this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.canvas.Location = new System.Drawing.Point(0, 0);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(1301, 676);
+            this.canvas.Size = new System.Drawing.Size(1325, 700);
             this.canvas.TabIndex = 0;
             // 
             // LanderGui
@@ -51,7 +49,9 @@
             this.Controls.Add(this.canvas);
             this.Name = "LanderGui";
             this.Text = "LanderGui";
+            this.SizeChanged += new System.EventHandler(this.LanderGui_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LanderGui_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.LanderGui_KeyUp);
             this.ResumeLayout(false);
 
         }

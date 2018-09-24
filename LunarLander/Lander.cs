@@ -11,17 +11,17 @@ namespace LunarLander
 
         private const double EngineGeneratedAcceleration = MainEngineThrustN / TotalMassKg;
 
-        private const double MomentOfInertia = TotalMassKg * RadiusM * RadiusM / 2; // pretending lander is a homegeneous thin disc
+        // pretending lander is a homegeneous thin disc
+        private const double MomentOfInertia = TotalMassKg * RadiusM * RadiusM / 2;
         private const double SideThrusterTorque = SideThrustersThrustN * RadiusM;
         private const double AngularAcceleration = SideThrusterTorque / MomentOfInertia;
 
+        public Vector Position { get; private set; } = Vector.Zero;
         public Vector Velocity { get; private set; }
         public double AngularVelocity { get; private set; }
         public double OrientationAngle { get; private set; }
 
         public double MainEngineOrientationAngle => OrientationAngle + 270;
-
-        public DateTime SimulationTimestamp { get; private set; } = DateTime.Now;
 
         public bool IsMainEngineFiring { get; set; }
         public bool IsLeftThrusterFiring { get; set; }
@@ -29,10 +29,20 @@ namespace LunarLander
 
         public void AdvanceTime(int milliseconds)
         {
-            SimulationTimestamp = SimulationTimestamp.AddMilliseconds(milliseconds);
-
             var seconds = (double)milliseconds / 1000;
+            UpdatePosition(seconds);
+        }
+
+        private void UpdatePosition(double seconds)
+        {
+            var oldVelocity = Velocity;
             UpdateVelocity(seconds);
+            var newVelocity = Velocity;
+
+            var avgVelocity = oldVelocity.Avg(newVelocity);
+            var displacement = avgVelocity.Multiply(seconds);
+
+            Position = Position.Add(displacement);
         }
 
         // TODO: gravity
@@ -44,9 +54,10 @@ namespace LunarLander
 
             if (!IsMainEngineFiring) return;
 
-            var engineAvgOrientantion = (engineOldOrientation + engineNewOrientation) / 2; // way simplified, ..but meh, sufficient
+            // way simplified, ..but meh, sufficient
+            var engineAvgOrientantion = (engineOldOrientation + engineNewOrientation) / 2;
             var engineGeneratedVelocityMagnitude = EngineGeneratedAcceleration * seconds;
-            var engineGeneratedVelocity = new Vector(engineGeneratedVelocityMagnitude, engineAvgOrientantion);
+            var engineGeneratedVelocity = new Vector(engineGeneratedVelocityMagnitude, engineAvgOrientantion - 180);
 
             Velocity = Velocity.Add(engineGeneratedVelocity);
         }
