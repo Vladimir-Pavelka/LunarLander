@@ -54,7 +54,7 @@ namespace Gui
         private void DrawLander(Graphics graphics)
         {
             var landerPosition = new Point((int)_lander.Position.X + 550, -(int)_lander.Position.Y + 200);
-            using (var rotatedLanderImage = Utils.RotateImage(_landerImage, (float)_lander.OrientationAngle))
+            using (var rotatedLanderImage = Utils.RotateImage(_landerImage, -(float)_lander.OrientationAngle))
                 graphics.DrawImage(rotatedLanderImage, landerPosition);
         }
 
@@ -72,6 +72,10 @@ namespace Gui
 
                 case Keys.D:
                     _lander.IsLeftThrusterFiring = true;
+                    break;
+
+                case Keys.Space:
+                    _lander.Halt();
                     break;
             }
         }

@@ -4,9 +4,9 @@ namespace LunarLander
 {
     public class Lander
     {
-        private const double TotalMassKg = 2000;
+        private const double TotalMassKg = 200;
         private const double RadiusM = 5;
-        private const double MainEngineThrustN = 18000;
+        private const double MainEngineThrustN = 50000;
         private const double SideThrustersThrustN = 3000;
 
         private const double EngineGeneratedAcceleration = MainEngineThrustN / TotalMassKg;
@@ -21,11 +21,17 @@ namespace LunarLander
         public double AngularVelocity { get; private set; }
         public double OrientationAngle { get; private set; }
 
-        public double MainEngineOrientationAngle => OrientationAngle + 270;
+        public double MainEngineOrientationAngle => (OrientationAngle + 270) % 360;
 
         public bool IsMainEngineFiring { get; set; }
         public bool IsLeftThrusterFiring { get; set; }
         public bool IsRightThrusterFiring { get; set; }
+
+        public void Halt()
+        {
+            Velocity = Vector.Zero;
+            AngularVelocity = 0;
+        }
 
         public void AdvanceTime(int milliseconds)
         {
@@ -76,7 +82,7 @@ namespace LunarLander
 
             var orientantionAngleDiffRadians = (oldAngularVelocity + newAngularVelocity) / 2 * seconds;
             var orientationAngleDiffDegrees = orientantionAngleDiffRadians / Math.PI * 180;
-            OrientationAngle = OrientationAngle + orientationAngleDiffDegrees;
+            OrientationAngle = (OrientationAngle + orientationAngleDiffDegrees) % 360;
         }
 
         public static Lander Still { get; } = new Lander(Vector.Zero, 0, 0);
@@ -86,7 +92,7 @@ namespace LunarLander
         {
             Velocity = velocity;
             AngularVelocity = angularVelocity;
-            OrientationAngle = orientationAngle;
+            OrientationAngle = orientationAngle % 360;
         }
     }
 }

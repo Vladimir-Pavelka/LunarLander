@@ -9,7 +9,7 @@ namespace LunarLander
             if (IsCloseToZero(tuple.x) && IsCloseToZero(tuple.y)) return Vector.Zero;
 
             var resultMagnitude = Math.Sqrt(tuple.x * tuple.x + tuple.y * tuple.y);
-            var resultAngle = Utils.Asin(tuple.y / resultMagnitude);
+            var resultAngle = Utils.Atan2(tuple.y, tuple.x);
 
             return new Vector(resultMagnitude, resultAngle);
         }
