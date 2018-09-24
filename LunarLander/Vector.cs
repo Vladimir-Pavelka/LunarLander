@@ -17,7 +17,7 @@ namespace LunarLander
         public Vector(double magnitude, double angle)
         {
             Magnitude = magnitude;
-            Angle = angle;
+            Angle = angle % 360;
             _components = new Lazy<(double x, double y)>(ToComponents);
         }
 
@@ -31,8 +31,8 @@ namespace LunarLander
 
         private (double, double) ToComponents()
         {
-            var x = Magnitude * Math.Cos(Angle);
-            var y = Magnitude * Math.Sin(Angle);
+            var x = Magnitude * Utils.Cos(Angle);
+            var y = Magnitude * Utils.Sin(Angle);
 
             return (x, y);
         }

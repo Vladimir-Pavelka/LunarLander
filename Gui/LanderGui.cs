@@ -53,16 +53,25 @@ namespace Gui
 
         private void DrawLander(Graphics graphics)
         {
-            var landerPosition = new Point((int)_lander.Position.X, (int)_lander.Position.Y);
-            graphics.DrawImage(_landerImage, landerPosition);
+            var landerPosition = new Point((int)_lander.Position.X + 550, -(int)_lander.Position.Y + 200);
+            using (var rotatedLanderImage = Utils.RotateImage(_landerImage, (float)_lander.OrientationAngle))
+                graphics.DrawImage(rotatedLanderImage, landerPosition);
         }
 
         private void LanderGui_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
-                case Keys.Space:
+                case Keys.W:
                     _lander.IsMainEngineFiring = true;
+                    break;
+
+                case Keys.A:
+                    _lander.IsRightThrusterFiring = true;
+                    break;
+
+                case Keys.D:
+                    _lander.IsLeftThrusterFiring = true;
                     break;
             }
         }
@@ -71,14 +80,23 @@ namespace Gui
         {
             switch (e.KeyCode)
             {
-                case Keys.Space:
+                case Keys.W:
                     _lander.IsMainEngineFiring = false;
+                    break;
+
+                case Keys.A:
+                    _lander.IsRightThrusterFiring = false;
+                    break;
+
+                case Keys.D:
+                    _lander.IsLeftThrusterFiring = false;
                     break;
             }
         }
 
         private void LanderGui_SizeChanged(object sender, System.EventArgs e)
         {
+            _buffer.Dispose();
             _buffer = new Bitmap(canvas.Width, canvas.Height);
         }
     }

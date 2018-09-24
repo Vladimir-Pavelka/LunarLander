@@ -51,7 +51,8 @@
   <ItemGroup>
     <Compile Include="Lander.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TupleExtensions.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
