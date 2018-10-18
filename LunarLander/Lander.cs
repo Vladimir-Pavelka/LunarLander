@@ -33,6 +33,13 @@ namespace LunarLander
             AngularVelocity = 0;
         }
 
+        public void Reset()
+        {
+            Halt();
+            Position = Vector.Zero;
+            OrientationAngle = 0;
+        }
+
         public void AdvanceTime(int milliseconds)
         {
             var seconds = (double)milliseconds / 1000;
@@ -82,7 +89,7 @@ namespace LunarLander
 
             var orientantionAngleDiffRadians = (oldAngularVelocity + newAngularVelocity) / 2 * seconds;
             var orientationAngleDiffDegrees = orientantionAngleDiffRadians / Math.PI * 180;
-            OrientationAngle = (OrientationAngle + orientationAngleDiffDegrees) % 360;
+            OrientationAngle = Mod(OrientationAngle + orientationAngleDiffDegrees, 360);
         }
 
         public static Lander Still { get; } = new Lander(Vector.Zero, 0, 0);
@@ -92,7 +99,9 @@ namespace LunarLander
         {
             Velocity = velocity;
             AngularVelocity = angularVelocity;
-            OrientationAngle = orientationAngle % 360;
+            OrientationAngle = Mod(orientationAngle, 360);
         }
+
+        private static double Mod(double x, int m) => (x % m + m) % m;
     }
 }
